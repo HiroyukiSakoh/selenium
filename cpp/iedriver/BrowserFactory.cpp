@@ -1087,6 +1087,13 @@ BOOL CALLBACK BrowserFactory::FindEdgeWindow(HWND hwnd, LPARAM arg) {
   // continue if it is not "Chrome_WidgetWin_1"
   if (strcmp(ANDIE_FRAME_WINDOW_CLASS, name) != 0) return TRUE;
 
+  DWORD process_id = NULL;
+  ::GetWindowThreadProcessId(hwnd, &process_id);
+  ProcessWindowInfo* process_window_info = reinterpret_cast<ProcessWindowInfo*>(arg);
+  if (process_window_info->dwProcessId != process_id) {
+    return TRUE;
+  }
+
   return EnumChildWindows(hwnd, FindEdgeChildWindowForProcess, arg);
 }
 
